@@ -1,0 +1,122 @@
+name: VariaRadar
+options:
+  bundleIdPrefix: com.stefanhud
+  deploymentTarget:
+    iOS: "27.0"
+    watchOS: "27.0"
+  createIntermediateGroups: true
+settings:
+  base:
+    MARKETING_VERSION: "0.2.0"
+    CURRENT_PROJECT_VERSION: "1"
+    SWIFT_VERSION: "5.0"
+    CODE_SIGN_STYLE: Automatic
+    DEVELOPMENT_TEAM: PXV64F99UG
+    GENERATE_INFOPLIST_FILE: "NO"
+targets:
+  VariaRadar:
+    type: application
+    platform: iOS
+    deploymentTarget: "27.0"
+    sources:
+      - path: VariaRadar
+      - path: Shared
+      - path: LiveActivity
+    dependencies:
+      - target: VariaRadarWatch
+      - target: VariaRadarWidgets
+    entitlements:
+      path: VariaRadar/VariaRadar.entitlements
+      properties:
+        com.apple.developer.healthkit: true
+        com.apple.developer.healthkit.access: []
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.stefanhud.VariaRadar
+        TARGETED_DEVICE_FAMILY: "1"
+    info:
+      path: VariaRadar/Info.plist
+      properties:
+        CFBundleDisplayName: Varia Radar
+        CFBundleShortVersionString: "$(MARKETING_VERSION)"
+        CFBundleVersion: "$(CURRENT_PROJECT_VERSION)"
+        UILaunchScreen: {}
+        UISupportedInterfaceOrientations:
+          - UIInterfaceOrientationPortrait
+        NSBluetoothAlwaysUsageDescription: Connects to your Garmin Varia radar to show vehicles approaching from behind.
+        NSLocationWhenInUseUsageDescription: Uses GPS to show your speed during a ride.
+        NSHealthShareUsageDescription: Shows your live heart rate, zone and cadence from your Apple Watch ride.
+        NSHealthUpdateUsageDescription: Saves your rides to Apple Health and Fitness.
+        UIBackgroundModes:
+          - bluetooth-central
+          - workout-processing
+        NSSupportsLiveActivities: true
+        ITSAppUsesNonExemptEncryption: false
+  VariaRadarWatch:
+    type: application
+    platform: watchOS
+    deploymentTarget: "27.0"
+    sources:
+      - path: VariaRadarWatch
+      - path: Shared
+    entitlements:
+      path: VariaRadarWatch/VariaRadarWatch.entitlements
+      properties:
+        com.apple.developer.healthkit: true
+        com.apple.developer.healthkit.access: []
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.stefanhud.VariaRadar.watchkitapp
+        TARGETED_DEVICE_FAMILY: "4"
+        SKIP_INSTALL: "YES"
+    info:
+      path: VariaRadarWatch/Info.plist
+      properties:
+        CFBundleDisplayName: Varia Ride
+        CFBundleShortVersionString: "$(MARKETING_VERSION)"
+        CFBundleVersion: "$(CURRENT_PROJECT_VERSION)"
+        WKApplication: true
+        WKCompanionAppBundleIdentifier: com.stefanhud.VariaRadar
+        WKBackgroundModes:
+          - workout-processing
+        NSHealthShareUsageDescription: Reads your heart rate, zones and cycling sensors during a ride.
+        NSHealthUpdateUsageDescription: Saves your rides to Apple Health and Fitness, like any other workout.
+        NSLocationWhenInUseUsageDescription: Records your route and distance so the ride shows on a map in Fitness.
+        NSMotionUsageDescription: Measures how much you climb during a ride.
+  VariaRadarWidgets:
+    type: app-extension
+    platform: iOS
+    deploymentTarget: "27.0"
+    sources:
+      - path: VariaRadarWidgets
+      - path: LiveActivity
+      - path: Shared/ZoneColor.swift
+      - path: Shared/RideFormat.swift
+      - path: VariaRadar/Theme.swift
+      - path: VariaRadar/Models/Vehicle.swift
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.stefanhud.VariaRadar.widgets
+        TARGETED_DEVICE_FAMILY: "1"
+        SKIP_INSTALL: "YES"
+    info:
+      path: VariaRadarWidgets/Info.plist
+      properties:
+        CFBundleDisplayName: Varia Radar
+        CFBundleShortVersionString: "$(MARKETING_VERSION)"
+        CFBundleVersion: "$(CURRENT_PROJECT_VERSION)"
+        NSExtension:
+          NSExtensionPointIdentifier: com.apple.widgetkit-extension
+schemes:
+  VariaRadar:
+    build:
+      targets:
+        VariaRadar: all
+    run:
+      config: Debug
+  VariaRadarWatch:
+    build:
+      targets:
+        VariaRadarWatch: all
+    run:
+      config: Debug
