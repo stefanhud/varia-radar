@@ -99,8 +99,27 @@ final class WorkoutManager: NSObject, ObservableObject {
     }
 
     func elapsed(at date: Date) -> TimeInterval {
-        builder?.elapsedTime(at: date) ?? 0
+        #if DEBUG
+        if let demoStart { return date.timeIntervalSince(demoStart) }
+        #endif
+        return builder?.elapsedTime(at: date) ?? 0
     }
+
+    #if DEBUG
+    private var demoStart: Date?
+
+    /// Screenshot mode (launch argument `-demo`; add `-demoAlert` for the car warning).
+    func startDemo(showingAlert: Bool) {
+        demoStart = Date().addingTimeInterval(-2_745)
+        heartRate = 148
+        zone = 3
+        cadence = 88
+        distanceMeters = 18_400
+        activeEnergyKcal = 512
+        phase = .running
+        if showingAlert { carAlert = CarAlert(distanceMeters: 40, closingKmh: 46) }
+    }
+    #endif
 
     // MARK: Workout lifecycle
 

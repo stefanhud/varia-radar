@@ -59,7 +59,8 @@ final class RideViewModel: ObservableObject {
     /// Chooses real hardware on device, simulated data in the simulator.
     convenience init() {
         #if targetEnvironment(simulator)
-        self.init(radar: MockRadarProvider(), metrics: MockMetricsProvider())
+        let screenshotMode = CommandLine.arguments.contains("-demo")
+        self.init(radar: MockRadarProvider(frozen: screenshotMode), metrics: MockMetricsProvider())
         #else
         self.init(radar: VariaBluetoothProvider(), metrics: LocationMetricsProvider())
         #endif

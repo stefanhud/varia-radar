@@ -82,6 +82,17 @@ final class WatchWorkoutLink: NSObject, ObservableObject {
                                 closingKmh: Int(closingKmh.rounded()))))
     }
 
+    #if DEBUG
+    /// Screenshot mode (launch argument `-demo`): acts as if a Watch ride were running.
+    func startDemoRide() {
+        phase = .running
+        rideStartedAt = Date().addingTimeInterval(-2_745)
+        snapshot = WorkoutSnapshot(isPaused: false, heartRate: 148, zone: 3, cadence: 88,
+                                   distanceMeters: 18_400, activeEnergyKcal: 512, elapsed: 2_745)
+        snapshotReceivedAt = Date()
+    }
+    #endif
+
     /// Ride time right now, counting on smoothly between the Watch's updates.
     func elapsed(at date: Date = Date()) -> TimeInterval? {
         guard isRiding, let snapshot else { return nil }

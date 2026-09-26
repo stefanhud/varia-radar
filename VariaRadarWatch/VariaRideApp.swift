@@ -19,6 +19,15 @@ struct VariaRideApp: App {
     @WKApplicationDelegateAdaptor(WatchAppDelegate.self) private var appDelegate
     @StateObject private var workout = WorkoutManager.shared
 
+    init() {
+        #if DEBUG
+        let arguments = ProcessInfo.processInfo.arguments
+        if arguments.contains("-demo") {
+            WorkoutManager.shared.startDemo(showingAlert: arguments.contains("-demoAlert"))
+        }
+        #endif
+    }
+
     var body: some Scene {
         WindowGroup {
             WatchRootView()
