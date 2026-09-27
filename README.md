@@ -83,3 +83,7 @@ swift Design/render-readme-images.swift <screenshots folder> docs/images
 | `docs/images/` | The README images |
 
 The Varia's Bluetooth protocol is documented at the top of `VariaRadar/Radar/VariaBluetoothProvider.swift`.
+
+## License
+
+MIT – see [LICENSE](LICENSE). The app comes with no warranty: treat it as an extra pair of eyes, not a replacement for looking behind you.
