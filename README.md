@@ -1,19 +1,20 @@
-# Varia Radar
+# Car Back
 
 <p align="center">
-  <img src="docs/images/hero.png" alt="Varia Radar on an iPhone, the screen edges glowing red for a car closing in at 46 km/h, and the same car alert on an Apple Watch Ultra">
+  <img src="docs/images/hero.png" alt="Car Back on an iPhone, the screen edges glowing red for a car closing in at 46 km/h, and the same car alert on an Apple Watch Ultra">
 </p>
 
-An iPhone and Apple Watch app for riding with a Garmin Varia rear radar (RTL515/516).
+An iPhone and Apple Watch app for riding with a Garmin Varia™ rear radar (RTL515/516). Formerly called Varia Radar.
 
 - **Radar screen** – cars behind you, coloured by how soon they'd reach you, with their closing speed
 - **Apple Watch rides** – live heart rate, zone and cadence on the phone; the ride is saved to Fitness with route, climb and effort
 - **Alerts** – a tap on the wrist, a beep, a red glow around the screen edges, and a Live Activity in the Dynamic Island and on the Lock Screen
 - **Settings** – radar-only mode, alert timing, sound, glow and auto-dim
+- **Demo** – no radar with you? Simulated cars show how it all works
 
 Built with [Claude Code](https://claude.com/claude-code) by a first-time iOS developer – see [How it was built](#how-it-was-built).
 
-An independent project, not affiliated with or endorsed by Garmin. Varia is a trademark of Garmin Ltd.
+An independent project, not affiliated with or endorsed by Garmin. Garmin and Varia are trademarks of Garmin Ltd. or its subsidiaries.
 
 ## Screenshots
 
@@ -48,7 +49,7 @@ Some examples of that loop:
 - After the first test ride, the ride's distance and time kept running on the phone after the ride had ended on the Watch. Later the phone sometimes claimed it had lost the Watch after a normal finish. Both came down to how the phone followed the Watch's workout, and were fixed.
 - The app icons, the alert sounds and the images in this README are drawn by Swift scripts in `Design/`, written the same way.
 
-The result is about 2,700 lines of Swift in 34 files: an iPhone app, a watchOS app and a Live Activity extension, using SwiftUI, Core Bluetooth, HealthKit, ActivityKit, WidgetKit, Core Location and Core Motion.
+The result is about 2,800 lines of Swift in 35 files: an iPhone app, a watchOS app and a Live Activity extension, using SwiftUI, Core Bluetooth, HealthKit, ActivityKit, WidgetKit, Core Location and Core Motion.
 
 ## Building
 
@@ -65,7 +66,7 @@ To build under your own Apple account, set `DEVELOPMENT_TEAM` in `project.yml`.
 
 ### Making the screenshots
 
-Debug builds have a demo mode. Launched with `-demo` (in Xcode: Product › Scheme › Edit Scheme › Arguments), the iPhone app in the simulator shows three cars, one of them closing in fast, and a Watch ride in progress. The Watch app shows a ride; add `-demoAlert` for the car alert. The screenshots are then framed with:
+Debug builds have a screenshot mode. Launched with `-demo` (in Xcode: Product › Scheme › Edit Scheme › Arguments), the iPhone app in the simulator holds three cars still, one of them closing in fast, with a Watch ride in progress; `-noRadar` shows the screen you get before a radar connects. The Watch app shows a ride; add `-demoAlert` for the car alert. The README screenshots are then framed with:
 
 ```sh
 swift Design/render-readme-images.swift <screenshots folder> docs/images
@@ -81,6 +82,8 @@ swift Design/render-readme-images.swift <screenshots folder> docs/images
 | `Shared/`, `LiveActivity/` | Code shared between the targets |
 | `Design/` | Scripts that render the app icons, the alert sounds and the README images |
 | `docs/images/` | The README images |
+| `docs/app-store/` | The App Store listing: texts, review notes and screenshots |
+| `PRIVACY.md` | The privacy policy (the app collects no data) |
 
 The Varia's Bluetooth protocol is documented at the top of `VariaRadar/Radar/VariaBluetoothProvider.swift`.
 

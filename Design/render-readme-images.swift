@@ -10,7 +10,7 @@ import SwiftUI // only for Apple's continuous ("squircle") corners, which the sc
 //   swift Design/render-readme-images.swift <screenshots folder> docs/images
 //
 // The screenshots come from the simulators with the app in demo mode (see the README):
-//   iphone-radar.png, iphone-dynamic-island.png, iphone-settings.png   iPhone 18 Pro, 1206×2622
+//   iphone-radar.png, iphone-dynamic-island.png, iphone-settings.png   iPhone 18 Pro or Pro Max
 //   watch-ride.png, watch-car-alert.png                                Watch Ultra 2, 410×502
 
 let arguments = CommandLine.arguments
