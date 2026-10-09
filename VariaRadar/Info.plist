@@ -5,7 +5,7 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>
-	<string>Varia Radar</string>
+	<string>Car Back</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -23,7 +23,7 @@
 	<key>ITSAppUsesNonExemptEncryption</key>
 	<false/>
 	<key>NSBluetoothAlwaysUsageDescription</key>
-	<string>Connects to your Garmin Varia radar to show vehicles approaching from behind.</string>
+	<string>Connects to your rear-view bike radar to show cars approaching from behind.</string>
 	<key>NSHealthShareUsageDescription</key>
 	<string>Shows your live heart rate, zone and cadence from your Apple Watch ride.</string>
 	<key>NSHealthUpdateUsageDescription</key>

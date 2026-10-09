@@ -238,7 +238,7 @@ struct LockScreenRideView: View {
             }
             MiniRadarStrip(cars: state.cars, connected: state.radarConnected && !isStale)
             if isStale {
-                Text("Open Varia Radar to reconnect")
+                Text("Open Car Back to reconnect")
                     .font(.caption)
                     .foregroundStyle(Palette.label)
             }

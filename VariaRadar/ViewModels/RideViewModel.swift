@@ -10,9 +10,12 @@ final class RideViewModel: ObservableObject {
     @Published var metrics: RideMetrics = .empty
     @Published var connection: ConnectionState = .disconnected
     @Published var radarBattery: Int?
+    /// Showing simulated cars, for trying the app without a radar.
+    @Published private(set) var isDemo = false
 
     let workout: WatchWorkoutLink
-    private let radar: RadarProvider
+    private var radar: RadarProvider
+    private let makeRadar: () -> RadarProvider
     private let metricsProvider: MetricsProvider?
 
     private var latest = MetricsSample()
@@ -31,20 +34,14 @@ final class RideViewModel: ObservableObject {
 
     private var isOnScreen: Bool { UIApplication.shared.applicationState == .active }
 
-    init(radar: RadarProvider, metrics: MetricsProvider?, workout: WatchWorkoutLink = .shared) {
-        self.radar = radar
+    /// `radar` makes the radar to use; it's called again when a demo ends.
+    init(radar: @escaping () -> RadarProvider, metrics: MetricsProvider?, workout: WatchWorkoutLink = .shared) {
+        self.makeRadar = radar
+        self.radar = radar()
         self.metricsProvider = metrics
         self.workout = workout
 
-        radar.onVehicles = { [weak self] vehicles in
-            self?.update(vehicles)
-        }
-        radar.onConnection = { [weak self] state in
-            self?.connection = state
-        }
-        radar.onBattery = { [weak self] percent in
-            self?.radarBattery = percent
-        }
+        listen(to: self.radar)
         metrics?.onUpdate = { [weak self] sample in
             self?.latest = sample
             self?.rebuildMetrics()
@@ -60,10 +57,54 @@ final class RideViewModel: ObservableObject {
     convenience init() {
         #if targetEnvironment(simulator)
         let screenshotMode = CommandLine.arguments.contains("-demo")
-        self.init(radar: MockRadarProvider(frozen: screenshotMode), metrics: MockMetricsProvider())
+        if CommandLine.arguments.contains("-noRadar") {
+            // The simulator has no Bluetooth, so this shows the screen you get before a radar connects.
+            self.init(radar: { VariaBluetoothProvider() }, metrics: MockMetricsProvider())
+        } else {
+            self.init(radar: { MockRadarProvider(frozen: screenshotMode) }, metrics: MockMetricsProvider())
+        }
         #else
-        self.init(radar: VariaBluetoothProvider(), metrics: LocationMetricsProvider())
+        self.init(radar: { VariaBluetoothProvider() }, metrics: LocationMetricsProvider())
         #endif
+    }
+
+    private func listen(to radar: RadarProvider) {
+        radar.onVehicles = { [weak self] vehicles in
+            self?.update(vehicles)
+        }
+        radar.onConnection = { [weak self] state in
+            self?.connection = state
+        }
+        radar.onBattery = { [weak self] percent in
+            self?.radarBattery = percent
+        }
+    }
+
+    // MARK: Demo
+
+    /// Simulated cars instead of the radar, so you can see how the app works without one.
+    func startDemo() {
+        switchRadar(to: MockRadarProvider(), demo: true)
+    }
+
+    func endDemo() {
+        switchRadar(to: makeRadar(), demo: false)
+    }
+
+    private func switchRadar(to newRadar: RadarProvider, demo: Bool) {
+        // Silence the old radar first, so its last words can't overwrite the new one's.
+        radar.onVehicles = nil
+        radar.onConnection = nil
+        radar.onBattery = nil
+        radar.stop()
+
+        radar = newRadar
+        isDemo = demo
+        connection = .disconnected
+        radarBattery = nil
+        update([])
+        listen(to: newRadar)
+        newRadar.start()
     }
 
     func start() {

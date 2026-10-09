@@ -26,6 +26,14 @@ enum AppSettings {
         ])
     }
 
+    /// Radar-only mode, unless you've already picked a side in Settings.
+    static func turnOffWatchUnlessChosen() {
+        let saved = UserDefaults.standard.persistentDomain(forName: Bundle.main.bundleIdentifier ?? "")
+        if saved?[Key.rideWithWatch] == nil {
+            UserDefaults.standard.set(false, forKey: Key.rideWithWatch)
+        }
+    }
+
     static var rideWithWatch: Bool { UserDefaults.standard.bool(forKey: Key.rideWithWatch) }
     static var showHeartRate: Bool { rideWithWatch && UserDefaults.standard.bool(forKey: Key.showHeartRate) }
     static var showCadence: Bool { rideWithWatch && UserDefaults.standard.bool(forKey: Key.showCadence) }

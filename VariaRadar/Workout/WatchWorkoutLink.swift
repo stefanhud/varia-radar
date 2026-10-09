@@ -64,7 +64,7 @@ final class WatchWorkoutLink: NSObject, ObservableObject {
         // If the Watch never mirrors back, don't spin forever.
         DispatchQueue.main.asyncAfter(deadline: .now() + 20) { [weak self] in
             guard let self, self.phase == .starting else { return }
-            self.phase = .failed("No answer from the Watch. Open Varia Ride on it once to allow access, then try again.")
+            self.phase = .failed("No answer from the Watch. Open Car Back on it once to allow access, then try again.")
         }
     }
 
@@ -178,8 +178,9 @@ final class WatchWorkoutLink: NSObject, ObservableObject {
                                   predicate: HKQuery.predicateForSamples(withStart: start.addingTimeInterval(-120), end: nil),
                                   limit: 1,
                                   sortDescriptors: newestFirst) { [weak self] _, samples, _ in
+            // Only a ride our own Watch app saved (its bundle ID starts with this app's).
             guard let workout = samples?.first as? HKWorkout,
-                  workout.sourceRevision.source.bundleIdentifier.hasPrefix("com.stefanhud.VariaRadar") else { return }
+                  workout.sourceRevision.source.bundleIdentifier.hasPrefix(Bundle.main.bundleIdentifier ?? "-") else { return }
             let summary = WorkoutSummary(savedRide: workout)
             DispatchQueue.main.async {
                 guard let self, self.summary == nil, !self.isRiding, self.phase != .starting else { return }

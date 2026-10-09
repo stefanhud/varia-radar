@@ -23,7 +23,7 @@ struct SettingsView: View {
                     Text("Apple Watch")
                 } footer: {
                     Text(rideWithWatch
-                         ? "Start rides here and your Watch records them to Fitness."
+                         ? "Start rides here and your Watch records them to Apple Health and Fitness."
                          : "Just the radar and your speed. Turn this on if you ride with an Apple Watch.")
                 }
 
@@ -57,6 +57,16 @@ struct SettingsView: View {
                     Text("Dims after 15 seconds without approaching cars to save battery, and wakes up "
                          + "the moment one appears or you tap the screen. Only while the radar is connected.")
                 }
+
+                Section {
+                    Link("Privacy policy", destination: Self.privacyPolicy)
+                    Link("Help and feedback", destination: Self.support)
+                } header: {
+                    Text("About")
+                } footer: {
+                    Text("Car Back \(Self.version). An extra pair of eyes, not a replacement for looking "
+                         + "behind you. Not affiliated with Garmin.")
+                }
             }
             .navigationTitle("Settings")
             .navigationBarTitleDisplayMode(.inline)
@@ -68,4 +78,8 @@ struct SettingsView: View {
         }
         .preferredColorScheme(.dark)
     }
+
+    private static let privacyPolicy = URL(string: "https://github.com/stefanhud/varia-radar/blob/main/PRIVACY.md")!
+    private static let support = URL(string: "https://github.com/stefanhud/varia-radar/issues")!
+    private static let version = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? ""
 }

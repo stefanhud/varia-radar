@@ -16,7 +16,8 @@ struct RadarScreen: View {
 
     var body: some View {
         VStack(spacing: 0) {
-            StatusBar(connection: vm.connection, battery: vm.radarBattery) {
+            StatusBar(connection: vm.connection, battery: vm.radarBattery, isDemo: vm.isDemo,
+                      onEndDemo: vm.endDemo) {
                 showingSettings = true
             }
             if rideWithWatch {
@@ -25,12 +26,17 @@ struct RadarScreen: View {
             RadarStripView(vehicles: vm.vehicles)
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
                 .overlay {
-                    if vm.connection != .connected && vm.vehicles.isEmpty {
+                    if vm.connection != .connected && vm.vehicles.isEmpty && !vm.isDemo {
                         VStack(spacing: 10) {
                             ProgressView().tint(Palette.label)
-                            Text(vm.connection == .scanning ? "Searching for Varia radar…" : "Radar offline")
+                            Text(vm.connection == .scanning ? "Searching for your radar…" : "Radar offline")
                                 .font(.system(size: 13))
                                 .foregroundColor(Palette.label)
+                            Button("No radar with you? Try the demo", action: vm.startDemo)
+                                .font(.system(size: 15, weight: .semibold))
+                                .buttonStyle(.bordered)
+                                .tint(.white)
+                                .padding(.top, 18)
                         }
                     }
                 }
@@ -73,11 +79,13 @@ struct RadarScreen: View {
     }
 }
 
-/// Top strip: radar connection on the left; radar battery and the Settings button on
-/// the right (the iPhone already shows the time).
+/// Top strip: radar connection on the left (or the demo, with a way out); radar
+/// battery and the Settings button on the right (the iPhone already shows the time).
 struct StatusBar: View {
     let connection: ConnectionState
     let battery: Int?
+    let isDemo: Bool
+    let onEndDemo: () -> Void
     let onSettings: () -> Void
 
     var body: some View {
@@ -86,13 +94,21 @@ struct StatusBar: View {
                 Circle()
                     .fill(dotColor)
                     .frame(width: 8, height: 8)
-                Text("VARIA")
+                Text(isDemo ? "DEMO" : "RADAR")
                     .font(.system(size: 12))
                     .tracking(1)
                     .foregroundColor(.white.opacity(0.9))
-                Text(stateText)
-                    .font(.system(size: 11))
-                    .foregroundColor(Palette.label)
+                if isDemo {
+                    Button("End", action: onEndDemo)
+                        .font(.system(size: 12, weight: .semibold))
+                        .buttonStyle(.bordered)
+                        .controlSize(.mini)
+                        .tint(.white)
+                } else {
+                    Text(stateText)
+                        .font(.system(size: 11))
+                        .foregroundColor(Palette.label)
+                }
             }
             Spacer()
             if let battery {

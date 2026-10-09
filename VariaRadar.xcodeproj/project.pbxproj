@@ -15,6 +15,7 @@
 		105B327FC55AC832A593AE0F /* MockRadarProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7642E265DB63176AC8420B95 /* MockRadarProvider.swift */; };
 		140E085AC75AE4477956FC70 /* VariaRadarWatch.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = E1FD8CCACE1116D1E7FAA9DC /* VariaRadarWatch.app */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		158DF3E889C6E0F4EEA7316C /* ThreatModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76FCF1B938BA1C125FD1C7D4 /* ThreatModel.swift */; };
+		1B239B756A4F6943FE8A29B7 /* WatchPairingCheck.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FA3545C9D944E7C591EC96A /* WatchPairingCheck.swift */; };
 		209D5D298D39A043E830010C /* LocationMetricsProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A233B520AB6EBB0E1AEAB62 /* LocationMetricsProvider.swift */; };
 		23FDDA84B129C6FDF5BC4CD6 /* Silence.caf in Resources */ = {isa = PBXBuildFile; fileRef = C864B6987251A74CAC078BD0 /* Silence.caf */; };
 		28324D9698747A84353B4FE0 /* ZoneMath.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC5DCBA032D9745B144D5BFB /* ZoneMath.swift */; };
@@ -107,6 +108,7 @@
 		157EF67ED4C3B8E07A906283 /* VariaRadarApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VariaRadarApp.swift; sourceTree = "<group>"; };
 		15D15EB3B6B8212E5E409E67 /* RideFormat.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RideFormat.swift; sourceTree = "<group>"; };
 		1F635D806F7960566FE6F585 /* RideLiveActivityController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RideLiveActivityController.swift; sourceTree = "<group>"; };
+		1FA3545C9D944E7C591EC96A /* WatchPairingCheck.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchPairingCheck.swift; sourceTree = "<group>"; };
 		20772D8431363A567DEA7201 /* WorkoutManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutManager.swift; sourceTree = "<group>"; };
 		214337FCDDB763006917AA57 /* ZoneColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZoneColor.swift; sourceTree = "<group>"; };
 		2490258471F10D00E6B4F851 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
@@ -199,6 +201,7 @@
 		66E6101C7076752C95A7E8FC /* Workout */ = {
 			isa = PBXGroup;
 			children = (
+				1FA3545C9D944E7C591EC96A /* WatchPairingCheck.swift */,
 				7DEB5CD25F4BC640AF2900FD /* WatchWorkoutLink.swift */,
 			);
 			path = Workout;
@@ -509,6 +512,7 @@
 				86A691FC8826EEC1006F1886 /* VariaBluetoothProvider.swift in Sources */,
 				B27425739629922558D3FEBA /* VariaRadarApp.swift in Sources */,
 				EB493218C61187C81332B452 /* Vehicle.swift in Sources */,
+				1B239B756A4F6943FE8A29B7 /* WatchPairingCheck.swift in Sources */,
 				CFC0599C3FEC2844BEBFE7D3 /* WatchWorkoutLink.swift in Sources */,
 				5D40275EA564242CA2186F7B /* ZoneColor.swift in Sources */,
 			);
@@ -540,7 +544,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.stefanhud.VariaRadar.widgets;
+				PRODUCT_BUNDLE_IDENTIFIER = com.stefanhud.CarBack.widgets;
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
 				TARGETED_DEVICE_FAMILY = 1;
@@ -553,7 +557,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = VariaRadarWatch/VariaRadarWatch.entitlements;
 				INFOPLIST_FILE = VariaRadarWatch/Info.plist;
-				PRODUCT_BUNDLE_IDENTIFIER = com.stefanhud.VariaRadar.watchkitapp;
+				PRODUCT_BUNDLE_IDENTIFIER = com.stefanhud.CarBack.watchkitapp;
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;
 				TARGETED_DEVICE_FAMILY = 4;
@@ -573,7 +577,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.stefanhud.VariaRadar;
+				PRODUCT_BUNDLE_IDENTIFIER = com.stefanhud.CarBack;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
@@ -635,7 +639,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				GENERATE_INFOPLIST_FILE = NO;
 				IPHONEOS_DEPLOYMENT_TARGET = 27.0;
-				MARKETING_VERSION = 0.2.0;
+				MARKETING_VERSION = 1.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -659,7 +663,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.stefanhud.VariaRadar;
+				PRODUCT_BUNDLE_IDENTIFIER = com.stefanhud.CarBack;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
@@ -675,7 +679,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.stefanhud.VariaRadar.widgets;
+				PRODUCT_BUNDLE_IDENTIFIER = com.stefanhud.CarBack.widgets;
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
 				TARGETED_DEVICE_FAMILY = 1;
@@ -732,7 +736,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				GENERATE_INFOPLIST_FILE = NO;
 				IPHONEOS_DEPLOYMENT_TARGET = 27.0;
-				MARKETING_VERSION = 0.2.0;
+				MARKETING_VERSION = 1.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -749,7 +753,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = VariaRadarWatch/VariaRadarWatch.entitlements;
 				INFOPLIST_FILE = VariaRadarWatch/Info.plist;
-				PRODUCT_BUNDLE_IDENTIFIER = com.stefanhud.VariaRadar.watchkitapp;
+				PRODUCT_BUNDLE_IDENTIFIER = com.stefanhud.CarBack.watchkitapp;
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;
 				TARGETED_DEVICE_FAMILY = 4;
