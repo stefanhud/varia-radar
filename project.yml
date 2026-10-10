@@ -8,7 +8,7 @@ options:
 settings:
   base:
     MARKETING_VERSION: "1.0"
-    CURRENT_PROJECT_VERSION: "1"
+    CURRENT_PROJECT_VERSION: "2"
     SWIFT_VERSION: "5.0"
     CODE_SIGN_STYLE: Automatic
     DEVELOPMENT_TEAM: PXV64F99UG
@@ -49,7 +49,6 @@ targets:
         NSHealthUpdateUsageDescription: Saves your rides to Apple Health and Fitness.
         UIBackgroundModes:
           - bluetooth-central
-          - workout-processing
         NSSupportsLiveActivities: true
         ITSAppUsesNonExemptEncryption: false
   VariaRadarWatch:
