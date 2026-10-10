@@ -89,6 +89,8 @@ final class RideViewModel: ObservableObject {
 
     func endDemo() {
         switchRadar(to: makeRadar(), demo: false)
+        // The demo's cars are gone, so don't leave them in the Dynamic Island.
+        if !liveActivityWanted { liveActivity.endNow() }
     }
 
     private func switchRadar(to newRadar: RadarProvider, demo: Bool) {
@@ -204,10 +206,13 @@ final class RideViewModel: ObservableObject {
 
     // MARK: Live Activity
 
-    /// Keeps the Dynamic Island going while the radar is connected or a ride is on.
+    /// The Dynamic Island stays while the radar is connected or a ride is on.
+    private var liveActivityWanted: Bool {
+        connection == .connected || workout.isRiding || workout.phase == .starting
+    }
+
     private func refreshLiveActivity(alert: CarAlert?) {
-        let sessionActive = connection == .connected || workout.isRiding || workout.phase == .starting
-        liveActivity.refresh(activityState(), sessionActive: sessionActive, alert: alert, sound: AppSettings.alertSound)
+        liveActivity.refresh(activityState(), sessionActive: liveActivityWanted, alert: alert, sound: AppSettings.alertSound)
     }
 
     private func activityState() -> RideActivityAttributes.ContentState {

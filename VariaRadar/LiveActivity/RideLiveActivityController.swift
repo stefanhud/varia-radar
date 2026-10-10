@@ -1,5 +1,6 @@
 import ActivityKit
 import Foundation
+import UIKit
 
 /// Runs the ride's Live Activity (the Dynamic Island and the Lock Screen banner)
 /// while the radar is connected or a Watch ride is in progress. Tapping it opens the app.
@@ -9,6 +10,7 @@ final class RideLiveActivityController {
     private var lastPush = Date.distantPast
     private var lastStartAttempt = Date.distantPast
     private var pendingEnd: DispatchWorkItem?
+    private var endTimeInBackground = UIBackgroundTaskIdentifier.invalid
 
     init() {
         // A previous run may have left one behind (e.g. the app was force-quit).
@@ -26,11 +28,13 @@ final class RideLiveActivityController {
     /// beep or, when `sound` is off, silently.
     func refresh(_ state: RideActivityAttributes.ContentState, sessionActive: Bool, alert: CarAlert?, sound: Bool) {
         guard sessionActive else {
+            showLast(state)
             scheduleEnd()
             return
         }
         pendingEnd?.cancel()
         pendingEnd = nil
+        releaseBackgroundTime()
 
         guard let activity else {
             start(with: state)
@@ -67,19 +71,63 @@ final class RideLiveActivityController {
         }
     }
 
+    /// Ends it right away, e.g. when you leave the demo.
+    func endNow() {
+        end()
+    }
+
+    /// While the end is pending, shows what's left (usually no cars and no radar), so
+    /// the island never shows cars that aren't there.
+    private func showLast(_ state: RideActivityAttributes.ContentState) {
+        guard let activity, let lastState,
+              state.cars != lastState.cars || state.radarConnected != lastState.radarConnected else { return }
+        self.lastState = state
+        lastPush = Date()
+        Task { await activity.update(ActivityContent(state: state, staleDate: Date().addingTimeInterval(90))) }
+    }
+
     /// Waits a little before ending, so a brief radar dropout doesn't make it flicker.
+    /// The app is often in the background by then, so it asks iOS for the time; if iOS
+    /// cuts that short, it ends straight away rather than leaving the island behind.
     private func scheduleEnd() {
         guard activity != nil, pendingEnd == nil else { return }
+        var backgroundTime = UIBackgroundTaskIdentifier.invalid
+        backgroundTime = UIApplication.shared.beginBackgroundTask { [weak self] in
+            // iOS wants its time back: end now, and hand the time back before returning.
+            self?.endTimeInBackground = .invalid
+            self?.end()
+            UIApplication.shared.endBackgroundTask(backgroundTime)
+        }
+        endTimeInBackground = backgroundTime
         let work = DispatchWorkItem { [weak self] in self?.end() }
         pendingEnd = work
-        DispatchQueue.main.asyncAfter(deadline: .now() + 30, execute: work)
+        DispatchQueue.main.asyncAfter(deadline: .now() + 15, execute: work)
     }
 
     private func end() {
+        pendingEnd?.cancel()
         pendingEnd = nil
-        guard let activity else { return }
+        // Keep the background time until the system has taken the activity down.
+        let backgroundTime = endTimeInBackground
+        endTimeInBackground = .invalid
+        guard let activity else {
+            Self.release(backgroundTime)
+            return
+        }
         self.activity = nil
         lastState = nil
-        Task { await activity.end(nil, dismissalPolicy: .immediate) }
+        Task { @MainActor in
+            await activity.end(nil, dismissalPolicy: .immediate)
+            Self.release(backgroundTime)
+        }
+    }
+
+    private func releaseBackgroundTime() {
+        Self.release(endTimeInBackground)
+        endTimeInBackground = .invalid
+    }
+
+    private static func release(_ backgroundTime: UIBackgroundTaskIdentifier) {
+        if backgroundTime != .invalid { UIApplication.shared.endBackgroundTask(backgroundTime) }
     }
 }
