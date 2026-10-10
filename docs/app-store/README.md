@@ -75,8 +75,9 @@ Garmin and Varia are trademarks of Garmin Ltd. or its subsidiaries. Car Back is 
 
 **Screenshots**
 
-- iPhone 6.9" (1320 × 2868): `screenshots/iphone-6.9/` in order 01–03. Smaller iPhones reuse these.
-- Apple Watch (410 × 502, Ultra 2): `screenshots/apple-watch/` in order 01–02.
+- iPhone with Dynamic Island, medium display (1206 × 2622): `screenshots/iphone/` in order 01–03.
+- Apple Watch (422 × 514, Ultra 4): `screenshots/apple-watch/` in order 01–02.
+- No iPad screenshots: the app is iPhone-only.
 
 ## App Review information
 
