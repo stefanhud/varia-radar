@@ -102,7 +102,7 @@ Car Back is for cyclists who use a rear-view bike radar (Garmin Varia) with an i
 - No sample files are needed.
 
 4. EXTERNAL SERVICES
-None. The app has no servers, accounts, analytics, advertising, AI or payment services of its own and sends no data anywhere. It uses Apple frameworks on the device only: Core Bluetooth (to connect to the user's own radar), HealthKit (to save and read the ride), Core Location (speed and route), ActivityKit/WidgetKit (Live Activity) and WatchConnectivity. The only external hardware is the user's own Garmin Varia radar, which the app connects to directly over Bluetooth Low Energy; no Garmin account or online service is involved.
+None. The app has no servers, accounts, analytics, advertising, AI or payment services of its own and sends no data anywhere. It uses Apple frameworks on the device only: Core Bluetooth (to connect to the user's own radar), HealthKit (to save and read the ride), Core Location (speed and route), ActivityKit/WidgetKit (Live Activity) and WatchConnectivity. While the radar, the demo or a ride is active, the iPhone app keeps location updates running in the background, so the speed and the cars in the Live Activity stay current while the rider uses another app (for example maps); iOS shows the blue location indicator. When none of these is active, the app stops using location in the background. The only external hardware is the user's own Garmin Varia radar, which the app connects to directly over Bluetooth Low Energy; no Garmin account or online service is involved.
 
 5. REGIONAL DIFFERENCES
 None. The app works the same in all regions (English, metric units).

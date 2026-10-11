@@ -17,4 +17,10 @@ protocol MetricsProvider: AnyObject {
     var onUpdate: ((MetricsSample) -> Void)? { get set }
     func start()
     func stop()
+    /// Whether to keep measuring while the app is in the background.
+    func runInBackground(_ on: Bool)
+}
+
+extension MetricsProvider {
+    func runInBackground(_ on: Bool) {}
 }

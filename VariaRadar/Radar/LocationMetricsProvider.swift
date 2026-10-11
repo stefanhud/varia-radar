@@ -28,6 +28,15 @@ final class LocationMetricsProvider: NSObject, MetricsProvider {
         running = false
         manager.stopUpdatingLocation()
     }
+
+    /// On while the radar, the demo or a ride is active: GPS then keeps running when you
+    /// switch to another app – and with it the app itself, so the speed and the cars in
+    /// the Dynamic Island stay live. Off otherwise, so the app sleeps and saves battery.
+    func runInBackground(_ on: Bool) {
+        guard manager.allowsBackgroundLocationUpdates != on else { return }
+        manager.allowsBackgroundLocationUpdates = on
+        manager.showsBackgroundLocationIndicator = on
+    }
 }
 
 extension LocationMetricsProvider: CLLocationManagerDelegate {

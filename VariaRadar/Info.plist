@@ -29,12 +29,13 @@
 	<key>NSHealthUpdateUsageDescription</key>
 	<string>Saves your rides to Apple Health and Fitness.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>Uses GPS to show your speed during a ride.</string>
+	<string>Uses GPS to show your speed during a ride, also in the Dynamic Island while you use another app.</string>
 	<key>NSSupportsLiveActivities</key>
 	<true/>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>bluetooth-central</string>
+		<string>location</string>
 	</array>
 	<key>UILaunchScreen</key>
 	<dict/>

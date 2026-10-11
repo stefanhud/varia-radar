@@ -58,8 +58,9 @@ final class RideViewModel: ObservableObject {
         #if targetEnvironment(simulator)
         let screenshotMode = CommandLine.arguments.contains("-demo")
         if CommandLine.arguments.contains("-noRadar") {
-            // The simulator has no Bluetooth, so this shows the screen you get before a radar connects.
-            self.init(radar: { VariaBluetoothProvider() }, metrics: MockMetricsProvider())
+            // Like a phone without its radar: the simulator has no Bluetooth, so this shows
+            // the screen you get before a radar connects, with the simulator's location as GPS.
+            self.init(radar: { VariaBluetoothProvider() }, metrics: LocationMetricsProvider())
         } else {
             self.init(radar: { MockRadarProvider(frozen: screenshotMode) }, metrics: MockMetricsProvider())
         }
@@ -212,7 +213,9 @@ final class RideViewModel: ObservableObject {
     }
 
     private func refreshLiveActivity(alert: CarAlert?) {
-        liveActivity.refresh(activityState(), sessionActive: liveActivityWanted, alert: alert, sound: AppSettings.alertSound)
+        let wanted = liveActivityWanted
+        metricsProvider?.runInBackground(wanted)
+        liveActivity.refresh(activityState(), sessionActive: wanted, alert: alert, sound: AppSettings.alertSound)
     }
 
     private func activityState() -> RideActivityAttributes.ContentState {

@@ -1,13 +1,13 @@
 # Car Back – Privacy Policy
 
-*Last updated: 9 October 2026*
+*Last updated: 11 October 2026*
 
 Car Back doesn't collect any data about you. There are no accounts, no ads, no analytics, no tracking, and no servers: the app never sends your data anywhere.
 
 ## What the app uses, and where it stays
 
 - **Bluetooth** – to connect to your rear-view bike radar. The distance and speed of cars behind you are shown live and then forgotten; nothing is stored.
-- **Location** – on the iPhone, only while the app is open, to show your speed. On the Apple Watch, during a ride, to record your route. The route is saved to Apple Health with the ride; nothing else is kept.
+- **Location** – on the iPhone, to show your speed while the radar, the demo or a ride is active – in the app, and in the Dynamic Island when you switch to another app (iOS then shows the blue location indicator). When none of them is active, the app stops using location in the background. On the Apple Watch, during a ride, to record your route. The route is saved to Apple Health with the ride; nothing else is kept.
 - **Apple Health** – the Watch app saves your rides to Apple Health (time, distance, heart rate, cadence, energy, route, climb and effort), like any other workout. The iPhone app reads your heart rate, cadence and the saved ride to show them on screen. Your health data stays in Apple Health on your devices: Car Back doesn't upload it, share it with anyone, or use it for advertising.
 - **Motion** – on the Apple Watch, the barometer measures how much you climb during a ride.
 - **Settings** – your choices in Settings are stored on your iPhone.

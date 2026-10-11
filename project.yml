@@ -8,7 +8,7 @@ options:
 settings:
   base:
     MARKETING_VERSION: "1.0"
-    CURRENT_PROJECT_VERSION: "3"
+    CURRENT_PROJECT_VERSION: "4"
     SWIFT_VERSION: "5.0"
     CODE_SIGN_STYLE: Automatic
     DEVELOPMENT_TEAM: PXV64F99UG
@@ -44,11 +44,12 @@ targets:
         UISupportedInterfaceOrientations:
           - UIInterfaceOrientationPortrait
         NSBluetoothAlwaysUsageDescription: Connects to your rear-view bike radar to show cars approaching from behind.
-        NSLocationWhenInUseUsageDescription: Uses GPS to show your speed during a ride.
+        NSLocationWhenInUseUsageDescription: Uses GPS to show your speed during a ride, also in the Dynamic Island while you use another app.
         NSHealthShareUsageDescription: Shows your live heart rate, zone and cadence from your Apple Watch ride.
         NSHealthUpdateUsageDescription: Saves your rides to Apple Health and Fitness.
         UIBackgroundModes:
           - bluetooth-central
+          - location
         NSSupportsLiveActivities: true
         ITSAppUsesNonExemptEncryption: false
   VariaRadarWatch:
