@@ -91,13 +91,13 @@ Garmin and Varia are trademarks of Garmin Ltd. or its subsidiaries. Car Back is 
 Attached: recorded on iPhone with the latest iOS. It starts by launching the app, connects to a Garmin Varia radar, goes through Settings, records a ride with the Apple Watch, and shows the built-in demo with simulated cars (car alerts, red edge glow, beep, Dynamic Island). The app has no accounts, no user-generated content and no in-app purchases; it is a paid app with all features included.
 
 2. PURPOSE AND AUDIENCE
-Car Back is for cyclists who use a rear-view bike radar (Garmin Varia) with an iPhone mounted on the handlebar. It shows the cars approaching from behind – their distance, closing speed and how soon they would reach the rider – and warns about fast ones with a red glow, a beep and a tap on the Apple Watch. Riders with an Apple Watch can also record the ride to Apple Health and Fitness and see heart rate, zone and cadence on the phone, so they don't need a separate bike computer.
+Car Back is for cyclists who use a rear-view bike radar (Garmin Varia) with an iPhone mounted on the handlebar. It shows the cars approaching from behind – their distance, closing speed and how soon they would reach the rider – and warns about fast ones with a red glow, a beep and a tap on the Apple Watch. Riders with an Apple Watch can also record the ride to Apple Health and Fitness and see heart rate, zone and – with a Bluetooth cadence sensor paired to the Watch – cadence on the phone, so they don't need a separate bike computer.
 
 3. HOW TO USE IT
 - No account or login is needed.
 - With a Garmin Varia radar: switch it on and open the app; it connects automatically over Bluetooth ("RADAR connected"), and cars appear as dots.
 - Without a radar: on the main screen, tap "No radar with you? Try the demo". Simulated cars approach; fast ones turn red, make the screen edges glow and beep. Tap "End" at the top to leave the demo. Go to the Home Screen during the demo to see the Live Activity in the Dynamic Island and on the Lock Screen.
-- Apple Watch (optional): with a paired Apple Watch, "Ride with Apple Watch" is on in Settings. Tap "Start ride" – the Car Back Watch app starts a cycling workout, and heart rate, zone and cadence appear on the phone. "Hold to end" finishes the ride, which is saved to Apple Health and Fitness.
+- Apple Watch (optional): with a paired Apple Watch, "Ride with Apple Watch" is on in Settings. Tap "Start ride" – the Car Back Watch app starts a cycling workout, and heart rate and zone appear on the phone (cadence too, when a Bluetooth cadence sensor is paired to the Watch; otherwise it shows "–"). "Hold to end" finishes the ride, which is saved to Apple Health and Fitness.
 - Settings: alert timing, alert sound, red edge glow, auto-dim, and links to the privacy policy and support.
 - No sample files are needed.
 
@@ -118,7 +118,7 @@ About two minutes on the iPhone, with the latest iOS, the Varia switched on and 
 1. Start Screen Recording, then tap Car Back on the Home Screen (the video must start with the launch).
 2. Wait for "RADAR connected" and the battery level.
 3. Open Settings, scroll through everything, tap Done.
-4. Tap Start ride; wait for heart rate and cadence; go to the Home Screen and long-press the Dynamic Island; come back and Hold to end until "Saved to Fitness".
+4. Tap Start ride; wait for the heart rate (cadence stays "–" without a cadence sensor); go to the Home Screen and long-press the Dynamic Island; come back and Hold to end until "Saved to Fitness".
 5. Switch the Varia off; tap "No radar with you? Try the demo"; wait for a red car (glow and beep); show the island from the Home Screen; come back and tap End.
 6. Stop recording.
 
