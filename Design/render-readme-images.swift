@@ -3,23 +3,27 @@ import CoreGraphics
 import ImageIO
 import UniformTypeIdentifiers
 import SwiftUI // only for Apple's continuous ("squircle") corners, which the screens have
+import AppKit  // only for the system font in the App Store images
 
 // Frames the README screenshots as an iPhone and an Apple Watch Ultra, and renders the
-// hero image with both, from plain CoreGraphics shapes.
+// hero image with both, from plain CoreGraphics shapes. With --store it renders the
+// App Store's product page header and search results images instead.
 //
 //   swift Design/render-readme-images.swift <screenshots folder> docs/images
+//   swift Design/render-readme-images.swift <screenshots folder> --store docs/app-store/creative
 //
 // The screenshots come from the simulators with the app in demo mode (see the README):
 //   iphone-radar.png, iphone-dynamic-island.png, iphone-settings.png   iPhone 18 Pro or Pro Max
 //   watch-ride.png, watch-car-alert.png                                Watch Ultra 2, 410×502
 
 let arguments = CommandLine.arguments
-guard arguments.count == 3 else {
-    print("usage: swift Design/render-readme-images.swift <screenshots folder> <output folder>")
+let storeImages = arguments.count == 4 && arguments[2] == "--store"
+guard arguments.count == 3 || storeImages else {
+    print("usage: swift Design/render-readme-images.swift <screenshots folder> [--store] <output folder>")
     exit(1)
 }
 let inDir = URL(fileURLWithPath: arguments[1])
-let outDir = URL(fileURLWithPath: arguments[2])
+let outDir = URL(fileURLWithPath: arguments.last!)
 try FileManager.default.createDirectory(at: outDir, withIntermediateDirectories: true)
 let sRGB = CGColorSpace(name: CGColorSpace.sRGB)!
 
@@ -32,10 +36,12 @@ func rgb(_ hex: UInt32, _ alpha: CGFloat = 1) -> CGColor {
 let red: UInt32 = 0xFF3B30
 let titanium = [rgb(0xD1D1D6), rgb(0x8E8E93), rgb(0x4A4A4F)]
 
-/// A transparent canvas with y growing downward, like a design tool.
-func canvas(_ width: Int, _ height: Int) -> CGContext {
+/// A canvas with y growing downward, like a design tool: transparent, or opaque for
+/// the App Store, which doesn't accept transparency.
+func canvas(_ width: Int, _ height: Int, opaque: Bool = false) -> CGContext {
+    let alpha = opaque ? CGImageAlphaInfo.noneSkipLast : CGImageAlphaInfo.premultipliedLast
     let ctx = CGContext(data: nil, width: width, height: height, bitsPerComponent: 8, bytesPerRow: 0,
-                        space: sRGB, bitmapInfo: CGImageAlphaInfo.premultipliedLast.rawValue)!
+                        space: sRGB, bitmapInfo: alpha.rawValue)!
     ctx.translateBy(x: 0, y: CGFloat(height))
     ctx.scaleBy(x: 1, y: -1)
     ctx.interpolationQuality = .high
@@ -115,6 +121,21 @@ func screenshot(_ image: CGImage, in rect: CGRect, radius: CGFloat, _ ctx: CGCon
     ctx.translateBy(x: rect.minX, y: rect.maxY)
     ctx.scaleBy(x: 1, y: -1)
     ctx.draw(image, in: CGRect(origin: .zero, size: rect.size))
+    ctx.restoreGState()
+}
+
+/// One line of text in the system font, centered on `center`.
+func text(_ string: String, size: CGFloat, weight: NSFont.Weight, _ hex: UInt32, centeredAt center: CGPoint, _ ctx: CGContext) {
+    let font = NSFont.systemFont(ofSize: size, weight: weight)
+    let color = NSColor(cgColor: rgb(hex))!
+    let line = CTLineCreateWithAttributedString(NSAttributedString(string: string, attributes: [.font: font, .foregroundColor: color]))
+    var ascent: CGFloat = 0, descent: CGFloat = 0, leading: CGFloat = 0
+    let width = CTLineGetTypographicBounds(line, &ascent, &descent, &leading)
+    ctx.saveGState()
+    ctx.textMatrix = .identity
+    ctx.translateBy(x: center.x - width / 2, y: center.y + (ascent - descent) / 2)
+    ctx.scaleBy(x: 1, y: -1)   // the canvas is flipped; text isn't
+    CTLineDraw(line, ctx)
     ctx.restoreGState()
 }
 
@@ -236,6 +257,68 @@ func saveWatch(_ shotName: String) {
     let screen = CGRect(origin: CGPoint(x: margin + outset, y: bandLength + outset), size: Watch.screen)
     drawWatch(load(shotName), screen: screen, bandTop: 0, bandBottom: CGFloat(height), ctx)
     save(ctx, shotName)
+}
+
+/// The App Store images' centerpiece: the phone with a car closing in fast and the same
+/// car on the wrist, side by side and centered on `center`.
+func drawStoreDevices(phoneHeight: CGFloat, watchHeight: CGFloat, gap: CGFloat, center: CGPoint,
+                      bandTop: CGFloat, bandBottom: CGFloat, _ ctx: CGContext) {
+    let phoneShot = load("iphone-radar.png"), watchShot = load("watch-car-alert.png")
+    let phoneSize = CGSize(width: phoneHeight * CGFloat(phoneShot.width) / CGFloat(phoneShot.height), height: phoneHeight)
+    let watchSize = CGSize(width: watchHeight * CGFloat(watchShot.width) / CGFloat(watchShot.height), height: watchHeight)
+    let phoneOutset = Phone.outset * phoneSize.width / Phone.screen.width
+    let watchK = watchSize.width / Watch.screen.width
+    // From the phone's left edge to the tip of the Digital Crown.
+    let phoneWidth = phoneSize.width + 2 * phoneOutset
+    let watchWidth = watchSize.width + 2 * Watch.outset * watchK + (20 + 60) * watchK
+    let left = center.x - (phoneWidth + gap + watchWidth) / 2
+    let phone = CGRect(origin: CGPoint(x: left + phoneOutset, y: center.y - phoneHeight / 2), size: phoneSize)
+    let watch = CGRect(origin: CGPoint(x: left + phoneWidth + gap + (20 + Watch.outset) * watchK, y: center.y - watchHeight / 2),
+                       size: watchSize)
+    glow(ctx, at: CGPoint(x: phone.midX, y: phone.midY), radius: phoneHeight * 1.5, red, 0.30)
+    glow(ctx, at: CGPoint(x: watch.midX, y: watch.midY), radius: watchHeight * 1.6, red, 0.14)
+    drawPhone(phoneShot, screen: phone, ctx)
+    drawWatch(watchShot, screen: watch, bandTop: bandTop, bandBottom: bandBottom, ctx)
+}
+
+/// Dark backdrop with the radar screen's distance lines running across it.
+func storeBackground(_ size: CGSize, lines: [CGFloat], _ ctx: CGContext) {
+    fill(CGPath(rect: CGRect(origin: .zero, size: size), transform: nil), ctx, [rgb(0x15151B), rgb(0x060608)],
+         from: .zero, to: CGPoint(x: 0, y: size.height))
+    ctx.setStrokeColor(rgb(0xFFFFFF, 0.06))
+    ctx.setLineWidth(3)
+    for y in lines {
+        ctx.move(to: CGPoint(x: 0, y: y))
+        ctx.addLine(to: CGPoint(x: size.width, y: y))
+    }
+    ctx.strokePath()
+}
+
+if storeImages {
+    // Product page header, 21:9: one idea, kept in the middle, since each device
+    // shows a different slice of it.
+    do {
+        let size = CGSize(width: 3840, height: 1646)
+        let ctx = canvas(Int(size.width), Int(size.height), opaque: true)
+        storeBackground(size, lines: [330, 660, 990, 1320], ctx)
+        drawStoreDevices(phoneHeight: 640, watchHeight: 310, gap: 90, center: CGPoint(x: size.width / 2, y: size.height / 2),
+                         bandTop: 0, bandBottom: size.height, ctx)
+        save(ctx, "header.png")
+    }
+    // Search results, 3:2: what the app does, at a glance.
+    do {
+        let size = CGSize(width: 3840, height: 2560)
+        let ctx = canvas(Int(size.width), Int(size.height), opaque: true)
+        storeBackground(size, lines: [820, 1260, 1700, 2140], ctx)
+        drawStoreDevices(phoneHeight: 1700, watchHeight: 820, gap: 170, center: CGPoint(x: size.width / 2, y: 1530),
+                         bandTop: 560, bandBottom: size.height, ctx)
+        // Last, so the red glow doesn't tint it.
+        text("Know what's behind you.", size: 170, weight: .bold, 0xFFFFFF, centeredAt: CGPoint(x: size.width / 2, y: 260), ctx)
+        text("Bike radar alerts on your iPhone and Apple Watch", size: 84, weight: .medium, 0xA1A1A6,
+             centeredAt: CGPoint(x: size.width / 2, y: 430), ctx)
+        save(ctx, "search-results.png")
+    }
+    exit(0)
 }
 
 // The hero: a car closing in fast, on the phone and on the wrist.

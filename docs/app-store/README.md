@@ -79,6 +79,11 @@ Garmin and Varia are trademarks of Garmin Ltd. or its subsidiaries. Car Back is 
 - Apple Watch (422 × 514, Ultra 4): `screenshots/apple-watch/` in order 01–02.
 - No iPad screenshots: the app is iPhone-only.
 
+**Header and search results images** (optional, in `creative/`, made with `Design/render-readme-images.swift --store`):
+
+- Product page header (21:9, 3840 × 1646): `creative/header.png` – no text, everything important in the middle, since each device shows a different slice.
+- Search results (3:2, 3840 × 2560): `creative/search-results.png` – shown instead of the screenshots in search.
+
 ## App Review information
 
 - Sign-in required: **No**
