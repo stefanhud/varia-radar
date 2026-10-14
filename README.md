@@ -6,6 +6,12 @@
 
 An iPhone and Apple Watch app for riding with a Garmin Varia™ rear radar (RTL515/516). Formerly called Varia Radar.
 
+<p align="center">
+  <a href="https://apps.apple.com/app/id6821264126"><img src="https://toolbox.marketingtools.apple.com/api/badges/download-on-the-app-store/black/en-us?size=250x83" alt="Download on the App Store" height="56"></a>
+</p>
+
+Get it on the [App Store](https://apps.apple.com/app/id6821264126), or build it yourself – the code is open source under the MIT license.
+
 - **Radar screen** – cars behind you, coloured by how soon they'd reach you, with their closing speed
 - **Apple Watch rides** – live heart rate, zone and cadence on the phone; the ride is saved to Fitness with route, climb and effort
 - **Alerts** – a tap on the wrist, a beep, a red glow around the screen edges, and a Live Activity in the Dynamic Island and on the Lock Screen
